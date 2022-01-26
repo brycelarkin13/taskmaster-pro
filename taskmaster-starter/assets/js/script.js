@@ -83,15 +83,22 @@ $("#task-form-modal .btn-primary").click(function() {
 
 // edit button was clicked
 $(".list-group").on("click", "p", function() {
-  var textInput = $("<textarea>")
+  // get current text of p element
+  var text = $(this)
+  .text()
+  .trim();
+
+  // replace p element with a new text area
+  var textInput = $("<textarea>").addClass("form-control").val(text);
   $(this).replaceWith(textInput)
-  textInput.trigger("focus")
-  .addClass("form-control")
-  .val(text);
+
+  // auto focus new element
+  textInput.trigger("focus");
 });
 
-$(".list-group").on("blur", "textarea", function() {
 
+// editable field was un-focused
+$(".list-group").on("blur", "textarea", function() {
   // get the text areas current value
   var text = $(this)
   .val()
@@ -119,15 +126,6 @@ $(".list-group").on("blur", "textarea", function() {
   tasks[status][index].text = text;
   saveTasks;
 
-});
-
-// remove all tasks
-$("#remove-tasks").on("click", function() {
-  for (var key in tasks) {
-    tasks[key].length = 0;
-    $("#list-" + key).empty();
-  }
-  saveTasks();
 });
 
 // due date was clicked
@@ -179,6 +177,15 @@ $(".list-group").on("blur", "input[type='text']", function() {
 
   // replace input with span element
   $(this).replaceWith(taskSpan);
+});
+
+// remove all tasks
+$("#remove-tasks").on("click", function() {
+  for (var key in tasks) {
+    tasks[key].length = 0;
+    $("#list-" + key).empty();
+  }
+  saveTasks();
 });
 
 // load tasks for the first time
